@@ -24,12 +24,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    console.log('🚀 AUTH CONTEXT STARTING')
+    console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+    console.log('Has Anon Key:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
+      console.log("Session: ", session)
       setUser(session?.user ?? null)
-      setLoading(false)
-    })
+      console.log("User: ", user)
+      console.log("Successfully retrievd session, reached setLoading line")
+      setLoading(false)  // Key line - is this being called?
+    }).catch(error => {
+      console.error('Session retrieval error:', error);
+      console.log("error retrieving session set loading become false,")
+      setLoading(false);  // Ensure loading is set to false even on error
+    });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(

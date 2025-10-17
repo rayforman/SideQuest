@@ -91,7 +91,7 @@ export function AuthForm({ onAuthSuccess }: AuthFormProps) {
           disabled={isLoading}
           className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {isLoading ? 'Loading...' : (isSignUp ? 'Sign Up' : 'Sign In')}
+          {isLoading ? 'Loading... auth form' : (isSignUp ? 'Sign Up' : 'Sign In')}
         </button>
       </form>
       

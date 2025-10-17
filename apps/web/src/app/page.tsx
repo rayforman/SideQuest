@@ -10,7 +10,7 @@ import { ProfileSetup } from '@/components/profile-setup'
 
 export default function Home() {
   const router = useRouter()
-  const { user, loading, signOut } = useAuth()
+  const { user, loading, signOut } = useAuth()  // populate user from auth-context.tsx
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [profileLoading, setProfileLoading] = useState(true)
   const [savedQuests, setSavedQuests] = useState<Quest[]>([])
@@ -18,18 +18,25 @@ export default function Home() {
   const [stats, setStats] = useState({ total: 0, liked: 0, saved: 0, remaining: 0 })
   const [error, setError] = useState<string | null>(null)
 
+  console.log("Home function entered")
+
   useEffect(() => {
+    console.log("Reached useEffect HERE! ")
     if (user) {
+      console.log("user is not null")
       checkUserProfile()
       fetchSavedQuests()
       fetchStats()
     }
+    else console.log("user is null!")
   }, [user])
 
   const checkUserProfile = async () => {
+    console.log("Reached checkUserProfile")
     if (!user) return
     
     try {
+      console.log("Reached try block")
       const { data, error } = await supabase
         .from('user_profiles')
         .select('*')
@@ -37,6 +44,7 @@ export default function Home() {
         .single()
 
       if (error && error.code !== 'PGRST116') { // PGRST116 = no rows found
+        console.log("Error: no rows found")
         throw error
       }
       
@@ -44,6 +52,7 @@ export default function Home() {
     } catch (err: any) {
       console.error('Error checking profile:', err)
     } finally {
+      console.log("Reached setProfile to false")
       setProfileLoading(false)
     }
   }
@@ -121,13 +130,15 @@ export default function Home() {
     setUserProfile(profile)
   }
 
-  if (loading || profileLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-xl text-gray-600">Loading...</div>
-      </div>
-    )
-  }
+  // // Debug this
+  // if (loading || profileLoading) {
+  //   console.log("Loading: ", loading, "Profile loading: ", profileLoading)
+  //   return (
+  //     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+  //       <div className="text-xl text-gray-600">Loading... homepage</div>
+  //     </div>
+  //   )
+  // }
 
   if (!user) {
     return (

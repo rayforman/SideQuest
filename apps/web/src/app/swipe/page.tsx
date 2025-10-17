@@ -84,10 +84,11 @@ export default function SwipePage() {
     setUserProfile(profile)
   }
 
+  
   if (loading || profileLoading) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-xl text-white">Loading...</div>
+        <div className="text-xl text-white">Loading... swipe</div>
       </div>
     )
   }
